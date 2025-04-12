@@ -43,7 +43,8 @@ class TaskController extends Controller
         ]);
 
         $task->update($validated);
-        return $task;
+
+        return response()->json($task);
     }
 
     public function destroy(Task $task)

@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $appends = ['quadrant'];
+
+    protected $fillable = ['title', 'description', 'important', 'urgent', 'status', 'due_date'];
 
     public function getQuadrantAttribute(): int
     {
@@ -15,5 +16,4 @@ class Task extends Model
         if (!$this->important && $this->urgent) return 3;
         return 4;
     }
-
 }
