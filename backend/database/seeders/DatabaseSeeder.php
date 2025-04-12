@@ -21,16 +21,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // Crear 10 tareas importantes y urgentes
+        // Crear Tareas
         Task::factory()->importantAndUrgent()->count(10)->create();
-
-        // Crear 10 tareas importantes pero no urgentes
         Task::factory()->importantButNotUrgent()->count(10)->create();
-
-        // Crear 10 tareas no importantes pero urgentes
         Task::factory()->notImportantButUrgent()->count(10)->create();
-
-        // Crear 10 tareas no importantes y no urgentes
         Task::factory()->notImportantAndNotUrgent()->count(10)->create();
     }
 }
