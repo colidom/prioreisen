@@ -7,7 +7,7 @@
 
         <!-- Matriz Eisenhower -->
         <div class="mt-10">
-          <div class="grid grid-cols-3 gap-4">
+          <div class="grid grid-cols-[auto,1fr,1fr] gap-4">
             <!-- Esquina vacía -->
             <div></div>
 
@@ -15,8 +15,10 @@
             <div class="text-center text-lg font-semibold text-gray-700">Urgente</div>
             <div class="text-center text-lg font-semibold text-gray-700">No urgente</div>
 
-            <!-- Etiqueta vertical: Importante -->
-            <div class="flex items-center justify-center text-lg font-semibold text-gray-700">
+            <div
+              class="flex items-center justify-center text-lg font-semibold text-gray-700 mb-2"
+              style="writing-mode: vertical-lr; transform: rotate(180deg)"
+            >
               Importante
             </div>
 
@@ -76,8 +78,10 @@
               </div>
             </div>
 
-            <!-- Etiqueta vertical: No importante -->
-            <div class="flex items-center justify-center text-lg font-semibold text-gray-700">
+            <div
+              class="flex items-center justify-center text-lg font-semibold text-gray-700 mb-2"
+              style="writing-mode: vertical-lr; transform: rotate(180deg)"
+            >
               No importante
             </div>
 
