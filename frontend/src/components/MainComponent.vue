@@ -2,131 +2,86 @@
   <div class="min-h-screen flex flex-col">
     <main class="flex-1 bg-gray-100 p-6">
       <div class="container mx-auto p-6">
-        <h1 class="text-4xl text-gray-500 font-bold text-center mb-6">Eisenhower Matrix</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <h1 class="text-4xl text-gray-600 font-bold text-center mb-6">Matriz Eisenhower</h1>
+
+        <!-- Matriz Eisenhower -->
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Esquina vacía -->
+          <div></div>
+
+          <!-- Cabeceras horizontales -->
+          <div class="text-center text-lg font-semibold text-gray-700">Urgente</div>
+          <div class="text-center text-lg font-semibold text-gray-700">No urgente</div>
+
+          <!-- Etiqueta vertical: Importante -->
+          <div class="flex items-center justify-center text-lg font-semibold text-gray-700">
+            Importante
+          </div>
+
+          <!-- Cuadrante 1: HACER YA -->
           <div class="bg-red-500 p-4 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-white text-center">
-              Quadrant 1: Important & Urgent
-            </h2>
-            <hr class="mt-3" />
+            <h2 class="text-xl font-semibold text-white text-center">HACER YA</h2>
+            <hr class="my-2 border-white" />
             <div v-for="task in quadrant1Tasks" :key="task.id" class="text-white">
               <div class="flex justify-between items-center">
                 <span>{{ task.title }}</span>
                 <div class="flex space-x-2">
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 2)"
-                  >
-                    🟦
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 3)"
-                  >
-                    🟨
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 4)"
-                  >
-                    🟩
-                  </button>
+                  <button @click="moveTaskToQuadrant(task, 2)">🟦</button>
+                  <button @click="moveTaskToQuadrant(task, 3)">🟨</button>
+                  <button @click="moveTaskToQuadrant(task, 4)">🟩</button>
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Cuadrante 2: PLANIFICAR -->
           <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-white text-center">
-              Quadrant 2: Important but Not Urgent
-            </h2>
-            <hr class="mt-3" />
+            <h2 class="text-xl font-semibold text-white text-center">PLANIFICAR</h2>
+            <hr class="my-2 border-white" />
             <div v-for="task in quadrant2Tasks" :key="task.id" class="text-white">
               <div class="flex justify-between items-center">
                 <span>{{ task.title }}</span>
                 <div class="flex space-x-2">
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 1)"
-                  >
-                    🟥
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 3)"
-                  >
-                    🟨
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 4)"
-                  >
-                    🟩
-                  </button>
+                  <button @click="moveTaskToQuadrant(task, 1)">🟥</button>
+                  <button @click="moveTaskToQuadrant(task, 3)">🟨</button>
+                  <button @click="moveTaskToQuadrant(task, 4)">🟩</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="bg-yellow-500 p-4 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-white text-center">
-              Quadrant 3: Urgent but Not Important
-            </h2>
-            <hr class="mt-3" />
+          <!-- Etiqueta vertical: No importante -->
+          <div class="flex items-center justify-center text-lg font-semibold text-gray-700">
+            No importante
+          </div>
+
+          <!-- Cuadrante 3: DELEGAR -->
+          <div class="bg-green-500 p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-white text-center">DELEGAR</h2>
+            <hr class="my-2 border-white" />
             <div v-for="task in quadrant3Tasks" :key="task.id" class="text-white">
               <div class="flex justify-between items-center">
                 <span>{{ task.title }}</span>
                 <div class="flex space-x-2">
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 1)"
-                  >
-                    🟥
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 2)"
-                  >
-                    🟦
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 4)"
-                  >
-                    🟩
-                  </button>
+                  <button @click="moveTaskToQuadrant(task, 1)">🟥</button>
+                  <button @click="moveTaskToQuadrant(task, 2)">🟦</button>
+                  <button @click="moveTaskToQuadrant(task, 4)">🟨</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="bg-green-500 p-4 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-white text-center">
-              Quadrant 4: Neither Important nor Urgent
-            </h2>
-            <hr class="mt-3" />
+          <!-- Cuadrante 4: DESECHAR -->
+          <div class="bg-yellow-500 p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-white text-center">ELIMINAR</h2>
+            <hr class="my-2 border-white" />
             <div v-for="task in quadrant4Tasks" :key="task.id" class="text-white">
               <div class="flex justify-between items-center">
                 <span>{{ task.title }}</span>
                 <div class="flex space-x-2">
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 1)"
-                  >
-                    🟥
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 2)"
-                  >
-                    🟦
-                  </button>
-                  <button
-                    class="text-white p-2 rounded-full text-sm"
-                    @click="moveTaskToQuadrant(task, 3)"
-                  >
-                    🟨
-                  </button>
+                  <button @click="moveTaskToQuadrant(task, 1)">🟥</button>
+                  <button @click="moveTaskToQuadrant(task, 2)">🟦</button>
+                  <button @click="moveTaskToQuadrant(task, 3)">🟩</button>
                 </div>
               </div>
             </div>
