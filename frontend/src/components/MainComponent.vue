@@ -41,8 +41,8 @@
                   <!-- Botones para mover a otros cuadrantes -->
                   <div class="flex space-x-2 justify-end items-center">
                     <button @click="moveTaskToQuadrant(task, 2)">🟦</button>
-                    <button @click="moveTaskToQuadrant(task, 3)">🟨</button>
-                    <button @click="moveTaskToQuadrant(task, 4)">🟩</button>
+                    <button @click="moveTaskToQuadrant(task, 3)">🟩</button>
+                    <button @click="moveTaskToQuadrant(task, 4)">🟨</button>
                   </div>
                 </div>
               </div>
@@ -69,8 +69,8 @@
                   <!-- Botones para mover a otros cuadrantes -->
                   <div class="flex space-x-2 justify-end items-center">
                     <button @click="moveTaskToQuadrant(task, 1)">🟥</button>
-                    <button @click="moveTaskToQuadrant(task, 3)">🟨</button>
-                    <button @click="moveTaskToQuadrant(task, 4)">🟩</button>
+                    <button @click="moveTaskToQuadrant(task, 3)">🟩</button>
+                    <button @click="moveTaskToQuadrant(task, 4)">🟨</button>
                   </div>
                 </div>
               </div>
@@ -145,6 +145,7 @@
     <div
       v-if="showModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+      @click.self="closeModal"
     >
       <div class="bg-white p-6 rounded-lg w-1/3">
         <h2 class="text-2xl text-gray-800 font-semibold mb-4">{{ selectedTask.title }}</h2>
