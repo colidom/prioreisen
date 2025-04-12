@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $appends = ['quadrant'];
-    private mixed $important;
-    private mixed $urgent;
 
     public function getQuadrantAttribute(): int
     {
