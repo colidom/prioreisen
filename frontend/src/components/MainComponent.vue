@@ -4,7 +4,14 @@
       <div class="container mx-auto p-6">
         <h1 class="text-4xl text-gray-700 font-bold text-center mb-1">Organizador de Tareas</h1>
         <span class="text-sm text-gray-800 italic text-center block">Matriz de Eisenhower</span>
-
+        <div class="flex justify-center my-4">
+          <button
+            @click="openNewTaskModal"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+          >
+            + Crear nueva tarea
+          </button>
+        </div>
         <!-- Matriz Eisenhower -->
         <div class="mt-10">
           <div class="grid grid-cols-[auto,1fr,1fr] gap-4">
@@ -157,6 +164,14 @@
 
         <!-- Formulario de edición -->
         <div v-if="isEditing">
+          <label class="block mb-2 text-sm text-gray-600">Tipo de tarea</label>
+          <select v-model="selectedQuadrant" class="border p-2 w-full mb-4 text-gray-600">
+            <option value="1">🟥 Hacer ya (Importante + Urgente)</option>
+            <option value="2">🟦 Planificar (Importante + No urgente)</option>
+            <option value="3">🟩 Delegar (No importante + Urgente)</option>
+            <option value="4">🟨 Eliminar (No importante + No urgente)</option>
+          </select>
+
           <input
             v-model="selectedTask.title"
             type="text"
@@ -192,6 +207,7 @@ export default {
     const showModal = ref(false)
     const selectedTask = ref(null)
     const isEditing = ref(false)
+    const selectedQuadrant = ref(1)
 
     const quadrant1Tasks = computed(() => {
       return tasks.value.filter((task) => task.important && task.urgent)
@@ -251,20 +267,88 @@ export default {
     }
 
     const openTaskModal = (task) => {
-      selectedTask.value = task
+      selectedTask.value = { ...task }
+      selectedQuadrant.value = task.important ? (task.urgent ? 1 : 2) : task.urgent ? 3 : 4
       showModal.value = true
       isEditing.value = false
+    }
+
+    const openNewTaskModal = () => {
+      selectedTask.value = {
+        id: null,
+        title: '',
+        description: '',
+        important: false,
+        urgent: false,
+      }
+      selectedQuadrant.value = 1 // Cuadrante por defecto
+      isEditing.value = true
+      showModal.value = true
     }
 
     const closeModal = () => {
       showModal.value = false
     }
 
-    const toggleEdit = () => {
-      isEditing.value = !isEditing.value
+    const toggleEdit = async () => {
+      if (!isEditing.value) {
+        isEditing.value = true
+        return
+      }
+
+      const task = selectedTask.value
+
+      // Asignar importancia y urgencia según el cuadrante seleccionado
+      task.important = selectedQuadrant.value === 1 || selectedQuadrant.value === 2
+      task.urgent = selectedQuadrant.value === 1 || selectedQuadrant.value === 3
+
+      try {
+        let response
+
+        if (task.id) {
+          response = await fetch(`http://localhost:8000/api/tasks/${task.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: task.title,
+              description: task.description,
+              important: task.important,
+              urgent: task.urgent,
+            }),
+          })
+        } else {
+          response = await fetch(`http://localhost:8000/api/tasks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(task),
+          })
+        }
+
+        if (!response.ok) {
+          throw new Error('Error al guardar la tarea')
+        }
+
+        const savedTask = await response.json()
+
+        if (!task.id) {
+          tasks.value.push(savedTask)
+        } else {
+          const index = tasks.value.findIndex((t) => t.id === savedTask.id)
+          if (index !== -1) {
+            tasks.value[index] = savedTask
+          }
+        }
+
+        isEditing.value = false
+        closeModal()
+      } catch (error) {
+        console.error('Error al guardar la tarea:', error)
+      }
     }
 
     const deleteTask = async (task) => {
+      if (!task.id) return closeModal()
+
       try {
         const response = await fetch(`http://localhost:8000/api/tasks/${task.id}`, {
           method: 'DELETE',
@@ -289,12 +373,14 @@ export default {
       quadrant4Tasks,
       moveTaskToQuadrant,
       openTaskModal,
+      openNewTaskModal,
       closeModal,
       showModal,
       selectedTask,
       toggleEdit,
       deleteTask,
       isEditing,
+      selectedQuadrant,
     }
   },
 }
