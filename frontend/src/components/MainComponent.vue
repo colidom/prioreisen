@@ -3,9 +3,6 @@
     <main class="flex-1 bg-gray-100 p-6">
       <div class="container mx-auto p-6">
         <h1 class="text-4xl text-gray-700 font-bold text-center mb-1">Organizador de Tareas</h1>
-        <span class="text-sm text-gray-800 italic text-center block"
-          >Lo urgente rara vez es importante, y lo importante nunca es urgente.</span
-        >
         <div class="flex justify-center my-4">
           <button
             @click="openNewTaskModal"

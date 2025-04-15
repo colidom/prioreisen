@@ -1,31 +1,15 @@
-<!-- src/components/AppHeader.vue -->
 <template>
-  <header class="bg-gray-800 text-white p-4 shadow-md">
-    <div class="flex items-center justify-between max-w-7xl mx-auto">
-      <img alt="Vue logo" class="logo w-16 h-16" src="@/assets/logo.svg" />
-      <nav class="space-x-6">
-        <RouterLink to="/" class="text-lg hover:text-blue-300">Home</RouterLink>
-        <RouterLink to="/about" class="text-lg hover:text-blue-300">About</RouterLink>
-      </nav>
+  <header class="bg-white text-gray-800 border-b shadow-sm">
+    <div
+      class="max-w-7xl mx-auto px-4 py-1 flex flex-col sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div class="flex items-center gap-2">
+        <img alt="Priorisen logo" class="w-32 h-32 object-contain" src="@/assets/logo.svg" />
+      </div>
+
+      <p class="text-sm text-gray-500 italic sm:text-right leading-tight mt-2 sm:mt-0">
+        “Lo urgente rara vez es importante, y lo importante nunca es urgente.”
+      </p>
     </div>
   </header>
 </template>
-
-<script setup>
-import { RouterLink } from 'vue-router'
-</script>
-
-<style scoped>
-.logo {
-  width: 60px;
-  height: 60px;
-}
-
-nav a {
-  transition: color 0.3s ease;
-}
-
-nav a:hover {
-  color: #4caf50;
-}
-</style>
