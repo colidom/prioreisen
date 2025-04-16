@@ -13,6 +13,7 @@ class TaskFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
+            'description' => $this->faker->paragraph(),
             'important' => $this->faker->boolean(),
             'urgent' => $this->faker->boolean(),
         ];
