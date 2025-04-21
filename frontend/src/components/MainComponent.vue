@@ -16,20 +16,16 @@
           <div class="grid grid-cols-[auto,1fr,1fr] gap-4">
             <!-- Esquina vacía -->
             <div></div>
-            
-            <!-- Cabeceras horizontales -->
             <div class="text-center text-lg font-semibold text-gray-700">Urgente</div>
             <div class="text-center text-lg font-semibold text-gray-700">No urgente</div>
 
-            <div
-              class="flex items-center justify-center text-lg font-semibold text-gray-700 mb-2"
-              style="writing-mode: vertical-lr; transform: rotate(180deg)"
-            >
+            <div class="flex items-center justify-center text-lg font-semibold text-gray-700 mb-2"
+                 style="writing-mode: vertical-lr; transform: rotate(180deg)">
               Importante
             </div>
 
             <!-- Cuadrante 1: HACER YA -->
-            <div class="bg-red-500 p-4 rounded-lg shadow-lg">
+            <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
               <h2 class="text-xl font-semibold text-white text-center">HACER YA</h2>
               <hr class="my-2 border-white" />
               <draggable
@@ -37,27 +33,6 @@
                 group="tasks"
                 item-key="id"
                 @end="onReorder(1)"
-              >
-                <template #item="{ element }">
-                  <div
-                    class="task-item text-white hover:bg-red-600 p-4 rounded-lg"
-                    @click="openTaskModal(element)"
-                  >
-                    <span>{{ element.title }}</span>
-                  </div>
-                </template>
-              </draggable>
-            </div>
-
-            <!-- Cuadrante 2: PLANIFICAR -->
-            <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
-              <h2 class="text-xl font-semibold text-white text-center">PLANIFICAR</h2>
-              <hr class="my-2 border-white" />
-              <draggable
-                v-model="quadrant2Tasks"
-                group="tasks"
-                item-key="id"
-                @end="onReorder(2)"
               >
                 <template #item="{ element }">
                   <div
@@ -70,22 +45,15 @@
               </draggable>
             </div>
 
-            <div
-              class="flex items-center justify-center text-lg font-semibold text-gray-700 mb-2"
-              style="writing-mode: vertical-lr; transform: rotate(180deg)"
-            >
-              No importante
-            </div>
-
-            <!-- Cuadrante 3: DELEGAR -->
+            <!-- Cuadrante 2: PLANIFICAR -->
             <div class="bg-green-500 p-4 rounded-lg shadow-lg">
-              <h2 class="text-xl font-semibold text-white text-center">DELEGAR</h2>
+              <h2 class="text-xl font-semibold text-white text-center">PLANIFICAR</h2>
               <hr class="my-2 border-white" />
               <draggable
-                v-model="quadrant3Tasks"
+                v-model="quadrant2Tasks"
                 group="tasks"
                 item-key="id"
-                @end="onReorder(3)"
+                @end="onReorder(2)"
               >
                 <template #item="{ element }">
                   <div
@@ -98,8 +66,34 @@
               </draggable>
             </div>
 
-            <!-- Cuadrante 4: ELIMINAR -->
+            <div class="flex items-center justify-center text-lg font-semibold text-gray-700 mb-2"
+                 style="writing-mode: vertical-lr; transform: rotate(180deg)">
+              No importante
+            </div>
+
+            <!-- Cuadrante 3: DELEGAR -->
             <div class="bg-yellow-500 p-4 rounded-lg shadow-lg">
+              <h2 class="text-xl font-semibold text-white text-center">DELEGAR</h2>
+              <hr class="my-2 border-white" />
+              <draggable
+                v-model="quadrant3Tasks"
+                group="tasks"
+                item-key="id"
+                @end="onReorder(3)"
+              >
+                <template #item="{ element }">
+                  <div
+                    class="task-item text-white hover:bg-yellow-600 p-4 rounded-lg"
+                    @click="openTaskModal(element)"
+                  >
+                    <span>{{ element.title }}</span>
+                  </div>
+                </template>
+              </draggable>
+            </div>
+
+            <!-- Cuadrante 4: ELIMINAR -->
+            <div class="bg-gray-500 p-4 rounded-lg shadow-lg">
               <h2 class="text-xl font-semibold text-white text-center">ELIMINAR</h2>
               <hr class="my-2 border-white" />
               <draggable
@@ -110,7 +104,7 @@
               >
                 <template #item="{ element }">
                   <div
-                    class="task-item text-white hover:bg-yellow-600 p-4 rounded-lg"
+                    class="task-item text-white hover:bg-gray-600 p-4 rounded-lg"
                     @click="openTaskModal(element)"
                   >
                     <span>{{ element.title }}</span>
@@ -133,7 +127,6 @@
         <h2 class="text-2xl text-gray-800 font-semibold mb-4">{{ selectedTask.title }}</h2>
         <p class="mb-4 text-gray-500" v-if="!isEditing">{{ selectedTask.description }}</p>
 
-        <!-- Formulario de edición -->
         <div v-if="isEditing">
           <label class="block mb-2 text-sm text-gray-600">Tipo de tarea</label>
           <select v-model="selectedQuadrant" class="border p-2 w-full mb-4 text-gray-600">
@@ -168,7 +161,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import draggable from 'vuedraggable'
 
 export default {
@@ -192,20 +185,20 @@ export default {
     }
 
     const quadrant1Tasks = computed({
-      get: () => tasks.value.filter((t) => t.important && t.urgent),
-      set: (newList) => updateTasksFromQuadrant(newList, 1),
+      get: () => tasks.value.filter(t => t.important && t.urgent),
+      set: newList => updateTasksFromQuadrant(newList, 1)
     })
     const quadrant2Tasks = computed({
-      get: () => tasks.value.filter((t) => t.important && !t.urgent),
-      set: (newList) => updateTasksFromQuadrant(newList, 2),
+      get: () => tasks.value.filter(t => t.important && !t.urgent),
+      set: newList => updateTasksFromQuadrant(newList, 2)
     })
     const quadrant3Tasks = computed({
-      get: () => tasks.value.filter((t) => !t.important && t.urgent),
-      set: (newList) => updateTasksFromQuadrant(newList, 3),
+      get: () => tasks.value.filter(t => !t.important && t.urgent),
+      set: newList => updateTasksFromQuadrant(newList, 3)
     })
     const quadrant4Tasks = computed({
-      get: () => tasks.value.filter((t) => !t.important && !t.urgent),
-      set: (newList) => updateTasksFromQuadrant(newList, 4),
+      get: () => tasks.value.filter(t => !t.important && !t.urgent),
+      set: newList => updateTasksFromQuadrant(newList, 4)
     })
 
     const updateTasksFromQuadrant = (newList, quadrant) => {
@@ -215,21 +208,19 @@ export default {
         task.urgent = quadrant === 1 || quadrant === 3
       })
       tasks.value = [
-        ...tasks.value.filter((t) => {
-          const belongs = quadrant === 1
-            ? t.important && t.urgent
-            : quadrant === 2
-            ? t.important && !t.urgent
-            : quadrant === 3
-            ? !t.important && t.urgent
-            : !t.important && !t.urgent
+        ...tasks.value.filter(t => {
+          const belongs =
+            (quadrant === 1 && t.important && t.urgent) ||
+            (quadrant === 2 && t.important && !t.urgent) ||
+            (quadrant === 3 && !t.important && t.urgent) ||
+            (quadrant === 4 && !t.important && !t.urgent)
           return !belongs
         }),
-        ...newList,
+        ...newList
       ]
     }
 
-    const onReorder = (quadrant) => {
+    const onReorder = async (quadrant) => {
       const list =
         quadrant === 1
           ? quadrant1Tasks.value
@@ -239,9 +230,9 @@ export default {
           ? quadrant3Tasks.value
           : quadrant4Tasks.value
 
-      list.forEach(async (task, index) => {
-        await saveTask({ ...task, position: index })
-      })
+      for (let i = 0; i < list.length; i++) {
+        await saveTask({ ...list[i], position: i })
+      }
     }
 
     const saveTask = async (task) => {
@@ -249,7 +240,7 @@ export default {
         const response = await fetch(`http://localhost:8000/api/tasks/${task.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(task),
+          body: JSON.stringify(task)
         })
         if (!response.ok) throw new Error('Error updating task')
       } catch (error) {
@@ -275,9 +266,9 @@ export default {
         description: '',
         important: true,
         urgent: true,
-        position: 0,
+        position: 0
       }
-      selectedQuadrant.value = 1 // Cuadrante por defecto
+      selectedQuadrant.value = 1
       isEditing.value = true
       showModal.value = true
     }
@@ -289,9 +280,6 @@ export default {
       }
 
       const task = selectedTask.value
-      
-      
-      // Asignar importancia y urgencia según el cuadrante seleccionado
       task.important = selectedQuadrant.value === 1 || selectedQuadrant.value === 2
       task.urgent = selectedQuadrant.value === 1 || selectedQuadrant.value === 3
 
@@ -301,7 +289,7 @@ export default {
         const response = await fetch(url, {
           method,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(task),
+          body: JSON.stringify(task)
         })
 
         if (!response.ok) throw new Error('Error al guardar la tarea')
@@ -310,7 +298,7 @@ export default {
         if (!task.id) {
           tasks.value.push(saved)
         } else {
-          const index = tasks.value.findIndex((t) => t.id === saved.id)
+          const index = tasks.value.findIndex(t => t.id === saved.id)
           if (index !== -1) tasks.value[index] = saved
         }
 
@@ -325,20 +313,19 @@ export default {
       if (!task.id) return closeModal()
       try {
         const response = await fetch(`http://localhost:8000/api/tasks/${task.id}`, {
-          method: 'DELETE',
+          method: 'DELETE'
         })
         if (!response.ok) throw new Error('Error al eliminar la tarea')
-        tasks.value = tasks.value.filter((t) => t.id !== task.id)
+        tasks.value = tasks.value.filter(t => t.id !== task.id)
         closeModal()
       } catch (error) {
         console.error('Error deleting task:', error)
       }
     }
 
-    onMounted(() => fetchTasks())
+    onMounted(fetchTasks)
 
     return {
-      tasks,
       quadrant1Tasks,
       quadrant2Tasks,
       quadrant3Tasks,
@@ -352,9 +339,9 @@ export default {
       openNewTaskModal,
       toggleEdit,
       deleteTask,
-      onReorder,
+      onReorder
     }
-  },
+  }
 }
 </script>
 
