@@ -232,7 +232,10 @@ export default {
       if (draggingTask.value) {
         draggingTask.value.important = quadrant === 1 || quadrant === 2
         draggingTask.value.urgent = quadrant === 1 || quadrant === 3
-        saveTask(draggingTask.value)
+        saveTask(draggingTask.value).then(() => {
+          // Actualizar el estado de los cuadrantes después de mover la tarea
+          tasks.value = [...tasks.value] // Esto forzará que Vue reactive el cambio
+        })
         draggingTask.value = null
       }
     }
@@ -249,12 +252,15 @@ export default {
         })
         if (!response.ok) throw new Error('Error updating task')
         const updatedTask = await response.json()
-        const index = tasks.value.findIndex((t) => t.id === task.id)
+
+        // Actualizar solo la tarea modificada en el array tasks
+        const index = tasks.value.findIndex((t) => t.id === updatedTask.id)
         if (index !== -1) tasks.value[index] = updatedTask
       } catch (error) {
         console.error('Error updating task:', error)
       }
     }
+
 
     const openTaskModal = (task) => {
       selectedTask.value = { ...task }
