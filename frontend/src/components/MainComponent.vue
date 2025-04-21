@@ -130,10 +130,10 @@
         <div v-if="isEditing">
           <label class="block mb-2 text-sm text-gray-600">Tipo de tarea</label>
           <select v-model="selectedQuadrant" class="border p-2 w-full mb-4 text-gray-600">
-            <option :value="1">🟥 Hacer ya (Importante + Urgente)</option>
-            <option :value="2">🟦 Planificar (Importante + No urgente)</option>
-            <option :value="3">🟩 Delegar (No importante + Urgente)</option>
-            <option :value="4">🟨 Eliminar (No importante + No urgente)</option>
+            <option :value="1">🟦 Hacer ya (Importante + Urgente)</option>
+            <option :value="2">🟩 Planificar (Importante + No urgente)</option>
+            <option :value="3">🟨 Delegar (No importante + Urgente)</option>
+            <option :value="4">⬜ Eliminar (No importante + No urgente)</option>
           </select>
 
           <input
