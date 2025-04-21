@@ -1,7 +1,7 @@
 <template>
   <header class="bg-white text-gray-800 border-b shadow-sm">
     <div
-      class="max-w-7xl mx-auto px-4 py-1 flex flex-col sm:flex-row sm:items-center sm:justify-between"
+      class="max-w-7xl mx-auto px-10 py-1 flex flex-col sm:flex-row sm:items-center sm:justify-between"
     >
       <div class="flex items-center gap-2">
         <img alt="Priorisen logo" class="w-32 h-32 object-contain" src="@/assets/logo.svg" />
