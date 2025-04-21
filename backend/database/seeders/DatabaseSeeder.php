@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Crear Tareas
-        Task::factory()->importantAndUrgent()->count(10)->create();
-        Task::factory()->importantButNotUrgent()->count(10)->create();
-        Task::factory()->notImportantButUrgent()->count(10)->create();
-        Task::factory()->notImportantAndNotUrgent()->count(10)->create();
+        Task::factory()->importantAndUrgent()->count(3)->create();
+        Task::factory()->importantButNotUrgent()->count(3)->create();
+        Task::factory()->notImportantButUrgent()->count(3)->create();
+        Task::factory()->notImportantAndNotUrgent()->count(3)->create();
     }
 }
