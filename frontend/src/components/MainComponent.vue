@@ -93,11 +93,6 @@ import { ref, computed, onMounted } from "vue";
 import Swal from "sweetalert2";
 import TaskCard from "../components/TaskCard.vue";
 
-const selectedTask = ref(null);
-const isEditing = ref(false);
-const isCreating = ref(false);
-const showForm = ref(false);
-
 const tasks = ref([]);
 const draggingTask = ref(null);
 
