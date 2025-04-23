@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white rounded-lg shadow p-4 mb-4 cursor-move"
+    class="bg-white/[0.45] rounded-lg shadow p-4 mb-4 cursor-move"  
     draggable="true"
     @dragstart="$emit('drag-task', task)"
   >
