@@ -160,11 +160,9 @@ const openNewTaskModal = async () => {
 		html: `
             <div class="swal2-html-container-custom">
                 <div class="swal2-container-custom">
-                <label for="swal-input1"><strong>Título</strong></label>
                 <input id="swal-input1" class="swal2-input" placeholder="Título">
                 </div>
                 <div class="swal2-container-custom">
-                <label for="swal-input2"><strong>Descripción</strong></label>
                 <textarea id="swal-input2" class="swal2-textarea" placeholder="Descripción" style="height: 130px;"></textarea>
                 </div>
             </div>
