@@ -1,52 +1,32 @@
 <template>
-    <div
-      class="task-item text-white p-4 rounded-lg transition-colors duration-300 cursor-pointer"
-      :class="hoverClass"
-      @click="open"
-      @dragstart="startDrag"
-      draggable="true"
-    >
-      <div class="grid grid-cols-2 gap-4">
-        <div class="flex justify-between items-center">
-          <span>{{ task.title }}</span>
-        </div>
+  <div
+    class="bg-white rounded-lg shadow p-4 mb-4 cursor-move"
+    draggable="true"
+    @dragstart="$emit('drag-task', task)"
+  >
+    <div class="flex justify-between items-start">
+      <div class="flex-1">
+        <div class="font-bold text-gray-800">{{ task.title }}</div>
+        <div class="text-sm text-gray-600">{{ task.description }}</div>
+      </div>
+      <div class="flex items-center space-x-2 ml-2">
+        <button @click="$emit('complete-task', task)" class="hover:scale-110 transition text-green-600">
+          ✅
+        </button>
+        <button @click="$emit('edit-task', task)" class="hover:scale-110 transition text-blue-600">
+          ✏️
+        </button>
+        <button @click="$emit('delete-task', task)" class="hover:scale-110 transition text-red-600">
+          🗑️
+        </button>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'TaskCard',
-    props: {
-      task: {
-        type: Object,
-        required: true,
-      },
-      color: {
-        type: String,
-        required: true, // ej: "red", "blue", "green", "yellow"
-      },
-    },
-    emits: ['drag-task', 'open-task'],
-    computed: {
-      hoverClass() {
-        return `hover:bg-${this.color}-600`
-      },
-    },
-    methods: {
-      startDrag() {
-        this.$emit('drag-task', this.task)
-      },
-      open() {
-        this.$emit('open-task', this.task)
-      },
-    },
-  }
-  </script>
-  
-  <style scoped>
-  .task-item {
-    transition: background-color 0.3s ease;
-  }
-  </style>
-  
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  task: Object,
+  color: String
+})
+</script>
