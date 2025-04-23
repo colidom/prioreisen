@@ -251,19 +251,22 @@ const markAsCompleted = async (task) => {
 };
 
 const deleteTask = async (task) => {
-	const confirm = await Swal.fire({
-		title: "¿Eliminar tarea?",
-		text: "Esta acción no se puede deshacer.",
-		icon: "warning",
-		showCancelButton: true,
-		confirmButtonText: "Sí, eliminar",
-		cancelButtonText: "Cancelar",
-	});
+  const result = await Swal.fire({
+    title: "¿Eliminar tarea?",
+    showDenyButton: true,
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    confirmButtonText: "Sí, eliminar",
+    denyButtonText: "Cancelar",
+  });
 
-	if (confirm.isConfirmed) {
-		await fetch(`http://localhost:8000/api/tasks/${task.id}`, { method: "DELETE" });
-		tasks.value = tasks.value.filter((t) => t.id !== task.id);
-	}
+  if (result.isConfirmed) {
+    await fetch(`http://localhost:8000/api/tasks/${task.id}`, { method: "DELETE" });
+    tasks.value = tasks.value.filter((t) => t.id !== task.id);
+    Swal.fire("¡Tarea eliminada!", "", "success");
+  } else if (result.isDenied) {
+    Swal.fire("¡La tarea no ha sido eliminada!", "", "info");
+  }
 };
 
 const recoverCompletedTask = async (task) => {
