@@ -92,6 +92,7 @@
 import { ref, computed, onMounted } from "vue";
 import Swal from "sweetalert2";
 import TaskCard from "../components/TaskCard.vue";
+import { API_URL } from "@/config";
 
 const tasks = ref([]);
 const draggingTask = ref(null);
@@ -122,7 +123,7 @@ const completedTasks = computed(() =>
 
 const fetchTasks = async () => {
 	try {
-		const res = await fetch("http://localhost:8000/api/tasks");
+		const res = await fetch(`${API_URL}/tasks`);
 		tasks.value = await res.json();
 	} catch (e) {
 		console.error("Error fetching tasks:", e);
@@ -144,7 +145,7 @@ const moveTaskToQuadrant = (quadrant) => {
 };
 
 const saveTask = async (task) => {
-	const url = `http://localhost:8000/api/tasks/${task.id}`;
+	const url = `${API_URL}/tasks/${task.id}`;
 	await fetch(url, {
 		method: "PATCH",
 		headers: { "Content-Type": "application/json" },
@@ -194,11 +195,11 @@ const openNewTaskModal = async () => {
 			status: "pending",
 		};
 
-		await fetch("http://localhost:8000/api/tasks", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(newTask),
-		});
+		await fetch(`${API_URL}/tasks`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTask),
+    });
 
 		fetchTasks();
 	}
@@ -261,7 +262,7 @@ const deleteTask = async (task) => {
   });
 
   if (result.isConfirmed) {
-    await fetch(`http://localhost:8000/api/tasks/${task.id}`, { method: "DELETE" });
+    await fetch(`${API_URL}/tasks/${task.id}`, { method: "DELETE" });
     tasks.value = tasks.value.filter((t) => t.id !== task.id);
     Swal.fire("¡Tarea eliminada!", "", "success");
   } else if (result.isDenied) {
