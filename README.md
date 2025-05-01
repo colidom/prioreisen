@@ -96,6 +96,10 @@ export const API_URL = "http://localhost:8000/api";
 
 -   Eliminar tareas: Confirmación antes de borrar definitivamente.
 
+## ✨ Capturas
+
+![Vista previa de Priorisen](img/dashboard.png)
+
 ## 🤝 Contribuciones
 
 ¡Contribuciones son bienvenidas! Si quieres mejorar Priorisen, por favor abre un issue o haz un pull request.
