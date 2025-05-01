@@ -84,7 +84,7 @@ export const API_URL = "http://localhost:8000/api";
 
 ## 🎯 Funcionalidades principales
 
-Crear tareas: Desde el botón "+ Crear nueva tarea", usando un modal dinámico.
+-   Crear tareas: Desde el botón "+ Crear nueva tarea", usando un modal dinámico.
 
 -   Editar tareas: Edita título y descripción rápidamente desde el modal.
 
