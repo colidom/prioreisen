@@ -11,7 +11,6 @@ Priorisen es una aplicación de gestión de tareas basada en la **Matriz de Eise
 -   ⚙️ **Backend:** [Laravel 11](https://laravel.com/)
 -   🌐 **Frontend:** [Vue 3 + Vite](https://vitejs.dev/)
 -   🧪 **Base de datos:** MySQL o SQLite
--   🔐 **Autenticación:** Laravel Sanctum (opcional)
 
 ---
 
@@ -46,7 +45,6 @@ Priorisen es una aplicación de gestión de tareas basada en la **Matriz de Eise
     -   **Drag & drop** para mover tareas entre cuadrantes.
     -   Visualización de tareas **terminadas** y posibilidad de **recuperarlas** a un cuadrante.
     -   Modal dinámico de creación/edición usando **SweetAlert2**.
-    -   Estilos responsivos y adaptados para escritorio y móvil.
 
 -   **Organización de Cuadrantes:**
     1. 🟦 **Hacer Ya** (Importante + Urgente)
@@ -102,5 +100,6 @@ Crear tareas: Desde el botón "+ Crear nueva tarea", usando un modal dinámico.
 
 ¡Contribuciones son bienvenidas! Si quieres mejorar Priorisen, por favor abre un issue o haz un pull request.
 
-📜 Licencia
+## 📜 Licencia
+
 Este proyecto está bajo la licencia MIT.
