@@ -127,6 +127,7 @@
             >
               <div class="text-gray-800 font-medium">{{ task.title }}</div>
               <div class="text-gray-500 text-sm">{{ task.description }}</div>
+              <div class="text-sm text-gray-400">Completada el: {{ new Date(task.due_date).toLocaleString() }}</div>
             </div>
           </div>
         </div>
@@ -285,6 +286,7 @@ const openTaskModal = async (task) => {
 
 const markAsCompleted = async (task) => {
   task.status = 'completed'
+  task.due_date = new Date().toISOString()
   await saveTask(task)
 }
 
