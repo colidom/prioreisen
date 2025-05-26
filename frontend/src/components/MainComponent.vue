@@ -330,6 +330,7 @@ const recoverCompletedTask = async (task) => {
     task.important = quadrant === 1 || quadrant === 2
     task.urgent = quadrant === 1 || quadrant === 3
     task.status = 'pending'
+    task.due_date = null
     await saveTask(task)
   }
 }
