@@ -62,7 +62,7 @@ Priorisen es una aplicación de gestión de tareas basada en la **Matriz de Eise
 ### Backend (Laravel)
 
 ```bash
-git clone https://github.com/tu-usuario/priorisen.git
+git clone https://github.com/colidom/priorisen.git
 cd priorisen/backend
 composer install
 cp .env.example .env
