@@ -113,7 +113,7 @@ Con esta idea, Priorisen divide tus tareas en 4 cuadrantes:
 
 ## 📁 Componentes principales
 
--   `MainView.vue`: Contiene la lógica principal.
+-   `MainComponent.vue`: Contiene la lógica principal.
 -   `TaskCard.vue`: Componente para representar tareas individuales.
 
 ## 🧪 API Esperada
