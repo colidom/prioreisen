@@ -1,8 +1,8 @@
-# 🧠 Priorisen - Prioriza con claridad, actúa con intención
+# 🧠 prioreisen - Prioriza con claridad, actúa con intención
 
 **"Lo que es importante rara vez es urgente y lo que es urgente rara vez es importante."**
 
-Priorisen es una aplicación de gestión de tareas basada en la **Matriz de Eisenhower**, diseñada para ayudarte a priorizar inteligentemente tus actividades diarias diferenciando lo importante de lo urgente.
+Prioreisen es una aplicación de gestión de tareas basada en la **Matriz de Eisenhower**, diseñada para ayudarte a priorizar inteligentemente tus actividades diarias diferenciando lo importante de lo urgente.
 
 ---
 
@@ -62,8 +62,8 @@ Priorisen es una aplicación de gestión de tareas basada en la **Matriz de Eise
 ### Backend (Laravel)
 
 ```bash
-git clone https://github.com/colidom/priorisen.git
-cd priorisen/backend
+git clone https://github.com/colidom/prioreisen.git
+cd prioreisen/backend
 composer install
 cp .env.example .env
 php artisan key:generate
@@ -74,7 +74,7 @@ php artisan serve
 ### Frontend (Vue)
 
 ```bash
-cd priorisen/frontend
+cd prioreisen/frontend
 npm install
 npm run dev
 ```
@@ -102,7 +102,7 @@ export const API_URL = "http://localhost:8000/api";
 
 > "Lo que es importante rara vez es urgente y lo que es urgente rara vez es importante."
 
-Con esta idea, Priorisen divide tus tareas en 4 cuadrantes:
+Con esta idea, prioreisen divide tus tareas en 4 cuadrantes:
 
 1. **🟦 Hacer ya** (Importante y Urgente)
 2. **🟩 Planificar** (Importante pero No urgente)
@@ -157,11 +157,11 @@ Funcional y completo. Soporta creación, edición, clasificación y archivado de
 
 ## ✨ Capturas
 
-![Vista previa de Priorisen](img/dashboard.png)
+![Vista previa de prioreisen](img/dashboard.png)
 
 ## 🤝 Contribuciones
 
-¡Contribuciones son bienvenidas! Si quieres mejorar Priorisen, por favor abre un issue o haz un pull request.
+¡Contribuciones son bienvenidas! Si quieres mejorar prioreisen, por favor abre un issue o haz un pull request.
 
 ## 📜 Licencia
 

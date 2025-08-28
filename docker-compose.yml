@@ -5,8 +5,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: priorisen-backend
-    container_name: priorisen_backend
+    image: prioreisen-backend
+    container_name: prioreisen_backend
     ports:
       - 8000:8000
     volumes:
@@ -16,8 +16,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: priorisen-frontend
-    container_name: priorisen_frontend
+    image: prioreisen-frontend
+    container_name: prioreisen_frontend
     ports:
       - 5173:5173
     volumes:
