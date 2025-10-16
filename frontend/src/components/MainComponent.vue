@@ -34,10 +34,11 @@
             <!-- Cuadrante 1: Hacer Ya -->
             <div
               class="relative bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded-2xl shadow-2xl min-h-[200px] transition-all duration-300"
-              @drop="moveTaskToQuadrant(1)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 1 }"
+              @drop="handleDrop(1, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 1)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 1)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -49,16 +50,42 @@
                 </h2>
                 <p class="text-white/80 text-xs text-center mb-3">Urgente e Importante</p>
                 <div class="space-y-2">
-                  <TaskCard
-                    v-for="task in quadrant1Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="blue"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant1Tasks" :key="task.id">
+                    <!-- Placeholder cuando se arrastra sobre esta posición -->
+                    <div
+                      v-if="dragOverQuadrant === 1 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 1, index)"
+                      @drop.stop="handleDrop(1, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="blue"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <!-- Placeholder al final si se arrastra al final de la lista -->
+                  <div
+                    v-if="dragOverQuadrant === 1 && draggingTask && dropIndex === quadrant1Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant1Tasks.length === 0" class="text-center text-white/70 italic py-6 text-sm">
                     No hay tareas urgentes e importantes
                   </p>
@@ -69,10 +96,11 @@
             <!-- Cuadrante 2: Planificar -->
             <div
               class="relative bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-2xl shadow-2xl min-h-[200px] transition-all duration-300"
-              @drop="moveTaskToQuadrant(2)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 2 }"
+              @drop="handleDrop(2, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 2)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 2)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -84,16 +112,40 @@
                 </h2>
                 <p class="text-white/80 text-xs text-center mb-3">Importante, No urgente</p>
                 <div class="space-y-2">
-                  <TaskCard
-                    v-for="task in quadrant2Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="green"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant2Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 2 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 2, index)"
+                      @drop.stop="handleDrop(2, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="green"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 2 && draggingTask && dropIndex === quadrant2Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant2Tasks.length === 0" class="text-center text-white/70 italic py-6 text-sm">
                     No hay tareas importantes para planificar
                   </p>
@@ -104,10 +156,11 @@
             <!-- Cuadrante 3: Delegar -->
             <div
               class="relative bg-gradient-to-br from-yellow-500 to-yellow-600 p-4 rounded-2xl shadow-2xl min-h-[200px] transition-all duration-300"
-              @drop="moveTaskToQuadrant(3)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 3 }"
+              @drop="handleDrop(3, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 3)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 3)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -119,16 +172,40 @@
                 </h2>
                 <p class="text-white/80 text-xs text-center mb-3">Urgente, No importante</p>
                 <div class="space-y-2">
-                  <TaskCard
-                    v-for="task in quadrant3Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="yellow"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant3Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 3 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 3, index)"
+                      @drop.stop="handleDrop(3, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="yellow"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 3 && draggingTask && dropIndex === quadrant3Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant3Tasks.length === 0" class="text-center text-white/70 italic py-6 text-sm">
                     No hay tareas para delegar
                   </p>
@@ -139,10 +216,11 @@
             <!-- Cuadrante 4: Eliminar -->
             <div
               class="relative bg-gradient-to-br from-gray-500 to-gray-600 p-4 rounded-2xl shadow-2xl min-h-[200px] transition-all duration-300"
-              @drop="moveTaskToQuadrant(4)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 4 }"
+              @drop="handleDrop(4, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 4)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 4)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -154,16 +232,40 @@
                 </h2>
                 <p class="text-white/80 text-xs text-center mb-3">No urgente, No importante</p>
                 <div class="space-y-2">
-                  <TaskCard
-                    v-for="task in quadrant4Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="gray"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant4Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 4 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 4, index)"
+                      @drop.stop="handleDrop(4, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="gray"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 4 && draggingTask && dropIndex === quadrant4Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-4 mb-2 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-base mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant4Tasks.length === 0" class="text-center text-white/70 italic py-6 text-sm">
                     No hay tareas para eliminar
                   </p>
@@ -214,10 +316,11 @@
             <!-- Cuadrante 1 Desktop -->
             <div
               class="relative bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-2xl shadow-2xl min-h-[300px] transition-all duration-300 hover:shadow-blue-500/50"
-              @drop="moveTaskToQuadrant(1)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 1 }"
+              @drop="handleDrop(1, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 1)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 1)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -228,16 +331,40 @@
                   HACER YA
                 </h2>
                 <div class="space-y-3">
-                  <TaskCard
-                    v-for="task in quadrant1Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="blue"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant1Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 1 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 1, index)"
+                      @drop.stop="handleDrop(1, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="blue"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 1 && draggingTask && dropIndex === quadrant1Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant1Tasks.length === 0" class="text-center text-white/70 italic py-8">
                     No hay tareas urgentes e importantes
                   </p>
@@ -248,10 +375,11 @@
             <!-- Cuadrante 2 Desktop -->
             <div
               class="relative bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-2xl shadow-2xl min-h-[300px] transition-all duration-300 hover:shadow-green-500/50"
-              @drop="moveTaskToQuadrant(2)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 2 }"
+              @drop="handleDrop(2, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 2)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 2)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -262,16 +390,40 @@
                   PLANIFICAR
                 </h2>
                 <div class="space-y-3">
-                  <TaskCard
-                    v-for="task in quadrant2Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="green"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant2Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 2 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 2, index)"
+                      @drop.stop="handleDrop(2, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="green"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 2 && draggingTask && dropIndex === quadrant2Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant2Tasks.length === 0" class="text-center text-white/70 italic py-8">
                     No hay tareas importantes para planificar
                   </p>
@@ -294,10 +446,11 @@
             <!-- Cuadrante 3 Desktop -->
             <div
               class="relative bg-gradient-to-br from-yellow-500 to-yellow-600 p-6 rounded-2xl shadow-2xl min-h-[300px] transition-all duration-300 hover:shadow-yellow-500/50"
-              @drop="moveTaskToQuadrant(3)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 3 }"
+              @drop="handleDrop(3, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 3)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 3)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -308,16 +461,40 @@
                   DELEGAR
                 </h2>
                 <div class="space-y-3">
-                  <TaskCard
-                    v-for="task in quadrant3Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="yellow"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant3Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 3 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 3, index)"
+                      @drop.stop="handleDrop(3, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="yellow"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 3 && draggingTask && dropIndex === quadrant3Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant3Tasks.length === 0" class="text-center text-white/70 italic py-8">
                     No hay tareas para delegar
                   </p>
@@ -328,10 +505,11 @@
             <!-- Cuadrante 4 Desktop -->
             <div
               class="relative bg-gradient-to-br from-gray-500 to-gray-600 p-6 rounded-2xl shadow-2xl min-h-[300px] transition-all duration-300 hover:shadow-gray-500/50"
-              @drop="moveTaskToQuadrant(4)"
+              :class="{ 'ring-4 ring-white ring-opacity-50 scale-105': dragOverQuadrant === 4 }"
+              @drop="handleDrop(4, $event)"
               @dragover.prevent
               @dragenter="onDragEnter($event, 4)"
-              @dragleave="onDragLeave"
+              @dragleave="onDragLeave($event, 4)"
             >
               <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
               <div class="relative">
@@ -342,16 +520,40 @@
                   ELIMINAR
                 </h2>
                 <div class="space-y-3">
-                  <TaskCard
-                    v-for="task in quadrant4Tasks"
-                    :key="task.id"
-                    :task="task"
-                    color="gray"
-                    @drag-task="dragTask"
-                    @edit-task="openTaskModal"
-                    @complete-task="markAsCompleted"
-                    @delete-task="deleteTask"
-                  />
+                  <template v-for="(task, index) in quadrant4Tasks" :key="task.id">
+                    <div
+                      v-if="dragOverQuadrant === 4 && draggingTask && dropIndex === index"
+                      class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                    >
+                      <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                      <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                    </div>
+                    
+                    <div
+                      @dragover.prevent="onDragOverTask($event, 4, index)"
+                      @drop.stop="handleDrop(4, $event)"
+                    >
+                      <TaskCard
+                        :task="task"
+                        color="gray"
+                        :is-dragging="draggingTask?.id === task.id"
+                        @drag-task="dragTask"
+                        @drag-end="onDragEnd"
+                        @edit-task="openTaskModal"
+                        @complete-task="markAsCompleted"
+                        @delete-task="deleteTask"
+                      />
+                    </div>
+                  </template>
+                  
+                  <div
+                    v-if="dragOverQuadrant === 4 && draggingTask && dropIndex === quadrant4Tasks.length"
+                    class="bg-white/30 backdrop-blur-sm rounded-xl p-5 mb-3 border-2 border-dashed border-white/50 animate-pulse"
+                  >
+                    <div class="font-bold text-white text-lg mb-2">{{ draggingTask.title }}</div>
+                    <div class="text-white/80 text-sm line-clamp-2">{{ draggingTask.description }}</div>
+                  </div>
+                  
                   <p v-if="quadrant4Tasks.length === 0" class="text-center text-white/70 italic py-8">
                     No hay tareas para eliminar
                   </p>
@@ -437,6 +639,10 @@ import { API_URL } from '@/config'
 const toast = useToast()
 const tasks = ref([])
 const draggingTask = ref(null)
+const dragOverQuadrant = ref(null)
+const dropIndex = ref(null)
+const initialQuadrant = ref(null)
+const initialIndex = ref(null)
 const loading = ref(false)
 const loadingCompleted = ref(false)
 
@@ -457,6 +663,16 @@ const quadrant4Tasks = computed(() =>
   filteredTasks.value.filter((task) => !task.important && !task.urgent)
 )
 const completedTasks = computed(() => tasks.value.filter((task) => task.status === 'completed'))
+
+const getQuadrantTasks = (quadrant) => {
+  switch (quadrant) {
+    case 1: return quadrant1Tasks.value
+    case 2: return quadrant2Tasks.value
+    case 3: return quadrant3Tasks.value
+    case 4: return quadrant4Tasks.value
+    default: return []
+  }
+}
 
 const formatDate = (dateString) => {
   if (!dateString) return 'Fecha no disponible'
@@ -494,14 +710,76 @@ onMounted(fetchTasks)
 
 const dragTask = (task) => {
   draggingTask.value = task
+  
+  // Determinar cuadrante inicial y posición
+  if (task.important && task.urgent) {
+    initialQuadrant.value = 1
+    initialIndex.value = quadrant1Tasks.value.findIndex(t => t.id === task.id)
+  } else if (task.important && !task.urgent) {
+    initialQuadrant.value = 2
+    initialIndex.value = quadrant2Tasks.value.findIndex(t => t.id === task.id)
+  } else if (!task.important && task.urgent) {
+    initialQuadrant.value = 3
+    initialIndex.value = quadrant3Tasks.value.findIndex(t => t.id === task.id)
+  } else {
+    initialQuadrant.value = 4
+    initialIndex.value = quadrant4Tasks.value.findIndex(t => t.id === task.id)
+  }
+}
+
+const onDragEnd = () => {
+  // Limpiar el estado al terminar el drag (cuando se cancela o termina mal)
+  setTimeout(() => {
+    if (draggingTask.value) {
+      draggingTask.value = null
+      dragOverQuadrant.value = null
+      dropIndex.value = null
+      initialQuadrant.value = null
+      initialIndex.value = null
+    }
+  }, 50)
 }
 
 const onDragEnter = (event, quadrant) => {
-  event.currentTarget.classList.add('ring-4', 'ring-white', 'ring-opacity-50', 'scale-105')
+  dragOverQuadrant.value = quadrant
+  
+  // Establecer la posición inicial del placeholder al entrar en el cuadrante
+  if (dropIndex.value === null) {
+    const quadrantTasks = getQuadrantTasks(quadrant)
+    // Si la tarea viene del mismo cuadrante, mantener su posición inicial
+    if (initialQuadrant.value === quadrant) {
+      dropIndex.value = initialIndex.value
+    } else {
+      // Si viene de otro cuadrante, colocar al final
+      dropIndex.value = quadrantTasks.length
+    }
+  }
 }
 
-const onDragLeave = (event) => {
-  event.currentTarget.classList.remove('ring-4', 'ring-white', 'ring-opacity-50', 'scale-105')
+const onDragOverTask = (event, quadrant, index) => {
+  event.preventDefault()
+  dragOverQuadrant.value = quadrant
+  
+  // Calcular si debemos mostrar el placeholder antes o después de este elemento
+  const rect = event.currentTarget.getBoundingClientRect()
+  const midpoint = rect.top + rect.height / 2
+  
+  if (event.clientY < midpoint) {
+    dropIndex.value = index
+  } else {
+    dropIndex.value = index + 1
+  }
+}
+
+const onDragLeave = (event, quadrant) => {
+  const rect = event.currentTarget.getBoundingClientRect()
+  const x = event.clientX
+  const y = event.clientY
+  
+  if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+    dragOverQuadrant.value = null
+    dropIndex.value = null
+  }
 }
 
 const updateTaskLocally = (updatedTask) => {
@@ -511,29 +789,106 @@ const updateTaskLocally = (updatedTask) => {
   }
 }
 
-const moveTaskToQuadrant = async (quadrant) => {
+const reorderTasksInQuadrant = (quadrant, taskId, newIndex) => {
+  const quadrantTasks = getQuadrantTasks(quadrant)
+  const currentIndex = quadrantTasks.findIndex(t => t.id === taskId)
+  
+  if (currentIndex === -1) return
+  
+  // Crear una nueva copia del array de tareas
+  const allTasks = [...tasks.value]
+  const task = allTasks.find(t => t.id === taskId)
+  
+  // Obtener todas las tareas del cuadrante
+  const tasksInQuadrant = allTasks.filter(t => {
+    if (quadrant === 1) return t.important && t.urgent && t.status !== 'completed'
+    if (quadrant === 2) return t.important && !t.urgent && t.status !== 'completed'
+    if (quadrant === 3) return !t.important && t.urgent && t.status !== 'completed'
+    if (quadrant === 4) return !t.important && !t.urgent && t.status !== 'completed'
+    return false
+  })
+  
+  // Reordenar
+  const tasksCopy = tasksInQuadrant.filter(t => t.id !== taskId)
+  const adjustedIndex = newIndex > currentIndex ? newIndex - 1 : newIndex
+  tasksCopy.splice(adjustedIndex, 0, task)
+  
+  // Asignar nuevos order_index
+  tasksCopy.forEach((t, idx) => {
+    const taskInAll = allTasks.find(at => at.id === t.id)
+    if (taskInAll) {
+      taskInAll.order_index = idx
+    }
+  })
+  
+  tasks.value = allTasks
+}
+
+const handleDrop = async (quadrant, event) => {
+  event.preventDefault()
+  
   if (!draggingTask.value) return
 
-  const originalTask = { ...draggingTask.value }
-  const taskId = draggingTask.value.id
+  const targetQuadrant = quadrant
+  const targetIndex = dropIndex.value !== null ? dropIndex.value : getQuadrantTasks(quadrant).length
+  
+  // Determinar si cambió de cuadrante o de posición
+  const changedQuadrant = initialQuadrant.value !== targetQuadrant
+  
+  let changedPosition = false
+  if (!changedQuadrant) {
+    // Ajustar el índice si estamos en el mismo cuadrante
+    const adjustedTargetIndex = targetIndex > initialIndex.value ? targetIndex - 1 : targetIndex
+    changedPosition = adjustedTargetIndex !== initialIndex.value
+  }
+  
+  // Limpiar estados visuales inmediatamente
+  dragOverQuadrant.value = null
+  dropIndex.value = null
 
+  const originalTask = { ...draggingTask.value }
+
+  // Actualizar las propiedades de cuadrante
   draggingTask.value.important = quadrant === 1 || quadrant === 2
   draggingTask.value.urgent = quadrant === 1 || quadrant === 3
-  updateTaskLocally(draggingTask.value)
 
-  try {
-    await saveTask(draggingTask.value)
-    toast.success('✅ Tarea movida correctamente', {
-      timeout: 2000
-    })
-  } catch (error) {
-    updateTaskLocally(originalTask)
-    toast.error('❌ No se pudo mover la tarea', {
-      timeout: 3000
-    })
-  } finally {
-    draggingTask.value = null
+  if (changedQuadrant) {
+    // Cambió de cuadrante
+    draggingTask.value.order_index = targetIndex
+    updateTaskLocally(draggingTask.value)
+
+    try {
+      await saveTask(draggingTask.value)
+      toast.success('✅ Tarea movida correctamente', {
+        timeout: 2000
+      })
+    } catch (error) {
+      updateTaskLocally(originalTask)
+      toast.error('❌ No se pudo mover la tarea', {
+        timeout: 3000
+      })
+    }
+  } else if (changedPosition) {
+    // Mismo cuadrante, diferente posición
+    reorderTasksInQuadrant(quadrant, draggingTask.value.id, targetIndex)
+    
+    try {
+      await saveTask(draggingTask.value)
+      toast.success('✅ Tarea reordenada correctamente', {
+        timeout: 2000
+      })
+    } catch (error) {
+      updateTaskLocally(originalTask)
+      toast.error('❌ No se pudo reordenar la tarea', {
+        timeout: 3000
+      })
+    }
   }
+  // Si no cambió nada, no mostramos mensaje
+
+  draggingTask.value = null
+  initialQuadrant.value = null
+  initialIndex.value = null
 }
 
 const saveTask = async (task) => {
@@ -816,6 +1171,13 @@ const recoverCompletedTask = async (task) => {
 </script>
 
 <style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;

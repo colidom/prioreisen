@@ -1,8 +1,10 @@
 <template>
   <div
-    class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl p-4 sm:p-5 mb-3 sm:mb-4 cursor-move border border-gray-200/50 transition-all duration-300 hover:-translate-y-1 group touch-manipulation"  
+    class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl p-4 sm:p-5 mb-3 sm:mb-4 cursor-move border border-gray-200/50 transition-all duration-300 hover:-translate-y-1 group touch-manipulation"
+    :class="{ 'opacity-40 scale-95': isDragging }"
     draggable="true"
-    @dragstart="$emit('drag-task', task)"
+    @dragstart="handleDragStart"
+    @dragend="handleDragEnd"
     v-motion
     :initial="{ opacity: 0, scale: 0.8 }"
     :enter="{ opacity: 1, scale: 1, transition: { duration: 400, ease: 'easeOut' } }"
@@ -81,8 +83,14 @@ import { ref, onMounted, nextTick } from 'vue'
 
 const props = defineProps({
   task: Object,
-  color: String
+  color: String,
+  isDragging: {
+    type: Boolean,
+    default: false
+  }
 })
+
+const emit = defineEmits(['drag-task', 'drag-end', 'edit-task', 'complete-task', 'delete-task'])
 
 const expanded = ref(false)
 const showToggle = ref(false)
@@ -90,6 +98,14 @@ const descRef = ref(null)
 
 const toggleExpanded = () => {
   expanded.value = !expanded.value
+}
+
+const handleDragStart = (event) => {
+  emit('drag-task', props.task)
+}
+
+const handleDragEnd = (event) => {
+  emit('drag-end')
 }
 
 const checkDescriptionOverflow = () => {
