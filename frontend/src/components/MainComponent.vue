@@ -859,12 +859,12 @@ const handleDrop = async (quadrant, event) => {
 
     try {
       await saveTask(draggingTask.value)
-      toast.success('✅ Tarea movida correctamente', {
+      toast.success('Tarea movida correctamente', {
         timeout: 2000
       })
     } catch (error) {
       updateTaskLocally(originalTask)
-      toast.error('❌ No se pudo mover la tarea', {
+      toast.error('No se pudo mover la tarea', {
         timeout: 3000
       })
     }
@@ -874,12 +874,12 @@ const handleDrop = async (quadrant, event) => {
     
     try {
       await saveTask(draggingTask.value)
-      toast.success('✅ Tarea reordenada correctamente', {
+      toast.success('Tarea reordenada correctamente', {
         timeout: 2000
       })
     } catch (error) {
       updateTaskLocally(originalTask)
-      toast.error('❌ No se pudo reordenar la tarea', {
+      toast.error('No se pudo reordenar la tarea', {
         timeout: 3000
       })
     }
@@ -906,14 +906,14 @@ const saveTask = async (task) => {
 
 const openNewTaskModal = async () => {
   const { value: formValues } = await Swal.fire({
-    title: '<span class="text-xl sm:text-2xl font-bold text-gray-800">✨ Nueva Tarea</span>',
+    title: '<span class="text-xl sm:text-2xl font-bold text-gray-800">Nueva Tarea</span>',
     width: '90%',
     maxWidth: '700px',
     html: `
       <div class="space-y-4 sm:space-y-6 text-left">
         <div>
           <label for="swal-input1" class="block text-sm font-semibold text-gray-700 mb-2">
-            📌 Título
+            Título
           </label>
           <input 
             id="swal-input1" 
@@ -923,7 +923,7 @@ const openNewTaskModal = async () => {
         </div>
         <div>
           <label for="swal-input2" class="block text-sm font-semibold text-gray-700 mb-2">
-            📝 Descripción
+            Descripción
           </label>
           <textarea 
             id="swal-input2" 
@@ -936,8 +936,8 @@ const openNewTaskModal = async () => {
     `,
     focusConfirm: false,
     showCancelButton: true,
-    confirmButtonText: '✅ Crear',
-    cancelButtonText: '❌ Cancelar',
+    confirmButtonText: 'Crear',
+    cancelButtonText: 'Cancelar',
     confirmButtonColor: '#4F46E5',
     cancelButtonColor: '#6B7280',
     customClass: {
@@ -949,7 +949,7 @@ const openNewTaskModal = async () => {
       const title = document.getElementById('swal-input1').value.trim()
       const description = document.getElementById('swal-input2').value.trim()
       if (!title || !description) {
-        Swal.showValidationMessage('⚠️ Por favor, completa todos los campos')
+        Swal.showValidationMessage('Por favor, completa todos los campos')
         return false
       }
       return { title, description }
@@ -977,11 +977,11 @@ const openNewTaskModal = async () => {
       const createdTask = await response.json()
       tasks.value.push(createdTask)
 
-      toast.success('🎉 Tarea creada exitosamente', {
+      toast.success('Tarea creada exitosamente', {
         timeout: 3000
       })
     } catch (error) {
-      toast.error('❌ Error al crear la tarea', {
+      toast.error('Error al crear la tarea', {
         timeout: 3000
       })
     }
@@ -990,7 +990,7 @@ const openNewTaskModal = async () => {
 
 const openTaskModal = async (task) => {
   const { value: formValues } = await Swal.fire({
-    title: '<span class="text-xl sm:text-2xl font-bold text-gray-800">✏️ Editar Tarea</span>',
+    title: '<span class="text-xl sm:text-2xl font-bold text-gray-800">Editar Tarea</span>',
     width: '90%',
     maxWidth: '700px',
     html: `
@@ -1019,8 +1019,8 @@ const openTaskModal = async (task) => {
     `,
     focusConfirm: false,
     showCancelButton: true,
-    confirmButtonText: '💾 Guardar',
-    cancelButtonText: '❌ Cancelar',
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
     confirmButtonColor: '#4F46E5',
     cancelButtonColor: '#6B7280',
     customClass: {
@@ -1051,12 +1051,12 @@ const openTaskModal = async (task) => {
 
     try {
       await saveTask(updatedTaskData)
-      toast.success('✅ Tarea actualizada correctamente', {
+      toast.success('Tarea actualizada correctamente', {
         timeout: 2500
       })
     } catch (error) {
       updateTaskLocally(originalTask)
-      toast.error('❌ Error al actualizar la tarea', {
+      toast.error('Error al actualizar la tarea', {
         timeout: 3000
       })
     }
@@ -1073,14 +1073,14 @@ const markAsCompleted = async (task) => {
 
   try {
     await saveTask(task)
-    toast.success('🎉 Tarea completada', {
+    toast.success('Tarea completada', {
       timeout: 2500
     })
   } catch (error) {
     task.status = originalStatus
     task.due_date = originalDueDate
     updateTaskLocally(task)
-    toast.error('❌ Error al completar la tarea', {
+    toast.error('Error al completar la tarea', {
       timeout: 3000
     })
   }
@@ -1088,7 +1088,7 @@ const markAsCompleted = async (task) => {
 
 const deleteTask = async (task) => {
   const result = await Swal.fire({
-    title: '🗑️ ¿Eliminar tarea?',
+    title: '¿Eliminar tarea?',
     text: 'Esta acción no se puede deshacer.',
     icon: 'warning',
     showCancelButton: true,
@@ -1111,11 +1111,11 @@ const deleteTask = async (task) => {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
       tasks.value = tasks.value.filter((t) => t.id !== task.id)
-      toast.success('✅ Tarea eliminada correctamente', {
+      toast.success('Tarea eliminada correctamente', {
         timeout: 2500
       })
     } catch (error) {
-      toast.error('❌ Error al eliminar la tarea', {
+      toast.error('Error al eliminar la tarea', {
         timeout: 3000
       })
     }
@@ -1124,18 +1124,18 @@ const deleteTask = async (task) => {
 
 const recoverCompletedTask = async (task) => {
   const confirm = await Swal.fire({
-    title: '🔄 ¿Recuperar tarea?',
+    title: '¿Recuperar tarea?',
     text: 'Selecciona el cuadrante al que deseas moverla.',
     input: 'select',
     inputOptions: {
-      1: '🟦 Hacer ya (Urgente e Importante)',
-      2: '🟩 Planificar (Importante, No urgente)',
-      3: '🟨 Delegar (Urgente, No importante)',
-      4: '⬜ Eliminar (Ni urgente ni importante)'
+      1: 'Hacer ya (Urgente e Importante)',
+      2: 'Planificar (Importante, No urgente)',
+      3: 'Delegar (Urgente, No importante)',
+      4: 'Eliminar (Ni urgente ni importante)'
     },
     showCancelButton: true,
-    confirmButtonText: '✅ Mover',
-    cancelButtonText: '❌ Cancelar',
+    confirmButtonText: 'Mover',
+    cancelButtonText: 'Cancelar',
     confirmButtonColor: '#4F46E5',
     cancelButtonColor: '#6B7280',
     customClass: {
@@ -1157,12 +1157,12 @@ const recoverCompletedTask = async (task) => {
 
     try {
       await saveTask(task)
-      toast.success('🔄 Tarea recuperada correctamente', {
+      toast.success('Tarea recuperada correctamente', {
         timeout: 2500
       })
     } catch (error) {
       updateTaskLocally(originalTask)
-      toast.error('❌ Error al recuperar la tarea', {
+      toast.error('Error al recuperar la tarea', {
         timeout: 3000
       })
     }
