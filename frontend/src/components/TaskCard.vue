@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl p-5 mb-4 cursor-move border border-gray-200/50 transition-all duration-300 hover:-translate-y-1 group"  
+    class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl p-4 sm:p-5 mb-3 sm:mb-4 cursor-move border border-gray-200/50 transition-all duration-300 hover:-translate-y-1 group touch-manipulation"  
     draggable="true"
     @dragstart="$emit('drag-task', task)"
     v-motion
@@ -10,8 +10,8 @@
   >
     <div class="flex justify-between items-start gap-3">
       <div class="flex-1 min-w-0">
-        <div class="font-bold text-gray-800 text-lg mb-2 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"></span>
+        <div class="font-bold text-gray-800 text-base sm:text-lg mb-2 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex-shrink-0"></span>
           <span class="truncate">{{ task.title }}</span>
         </div>
         <div 
@@ -20,17 +20,17 @@
             'whitespace-pre-wrap': true
           }"
           ref="descRef"
-          class="text-sm text-gray-600 leading-relaxed"
+          class="text-xs sm:text-sm text-gray-600 leading-relaxed"
         >
           {{ task.description }}
         </div>
         <div 
           v-if="showToggle" 
-          class="text-indigo-600 hover:text-indigo-700 cursor-pointer text-sm mt-2 font-medium inline-flex items-center gap-1 transition-colors" 
+          class="text-indigo-600 hover:text-indigo-700 cursor-pointer text-xs sm:text-sm mt-2 font-medium inline-flex items-center gap-1 transition-colors touch-manipulation" 
           @click="toggleExpanded"
         >
           <svg 
-            class="w-4 h-4 transition-transform duration-300" 
+            class="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300" 
             :class="{ 'rotate-180': expanded }"
             fill="none" 
             stroke="currentColor" 
@@ -38,34 +38,36 @@
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
-          {{ expanded ? 'Mostrar menos' : 'Mostrar más' }}
+          {{ expanded ? 'Menos' : 'Más' }}
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      
+      <!-- Botones de acción - Siempre en horizontal -->
+      <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
         <button 
-          @click="$emit('complete-task', task)" 
-          class="p-2 hover:bg-green-100 rounded-lg transition-all duration-200 hover:scale-110 text-green-600 opacity-0 group-hover:opacity-100"
+          @click.stop="$emit('complete-task', task)" 
+          class="p-2 hover:bg-green-100 active:bg-green-200 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 text-green-600 sm:opacity-0 sm:group-hover:opacity-100 touch-manipulation"
           title="Completar"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </button>
         <button 
-          @click="$emit('edit-task', task)" 
-          class="p-2 hover:bg-blue-100 rounded-lg transition-all duration-200 hover:scale-110 text-blue-600 opacity-0 group-hover:opacity-100"
+          @click.stop="$emit('edit-task', task)" 
+          class="p-2 hover:bg-blue-100 active:bg-blue-200 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 text-blue-600 sm:opacity-0 sm:group-hover:opacity-100 touch-manipulation"
           title="Editar"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
         </button>
         <button 
-          @click="$emit('delete-task', task)" 
-          class="p-2 hover:bg-red-100 rounded-lg transition-all duration-200 hover:scale-110 text-red-600 opacity-0 group-hover:opacity-100"
+          @click.stop="$emit('delete-task', task)" 
+          class="p-2 hover:bg-red-100 active:bg-red-200 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95 text-red-600 sm:opacity-0 sm:group-hover:opacity-100 touch-manipulation"
           title="Eliminar"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
@@ -111,5 +113,19 @@ onMounted(() => {
   line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Mejorar la experiencia táctil en móviles */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Asegurar que los botones tengan un área de toque mínima de 44x44px (recomendación de Apple) */
+@media (max-width: 640px) {
+  button {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 </style>
