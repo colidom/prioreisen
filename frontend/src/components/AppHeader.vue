@@ -29,7 +29,7 @@
           />
           <div class="flex flex-col">
             <span class="text-xl font-bold text-indigo-600 tracking-tight">Prioreisen</span>
-            <span class="text-xs text-gray-500">Gestión de Prioridades</span>
+            <span class="text-xs text-gray-500">Priotiza tus tareas</span>
           </div>
         </div>
 
