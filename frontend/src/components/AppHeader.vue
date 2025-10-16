@@ -1,9 +1,7 @@
 <template>
   <header
-    class="bg-white/80 backdrop-blur-lg text-gray-800 border-b border-gray-200/50 shadow-sm sticky top-0 z-50"
-    v-motion
-    :initial="{ opacity: 0, y: -50 }"
-    :enter="{ opacity: 1, y: 0, transition: { duration: 800, ease: 'easeOut' } }"
+    class="bg-white/80 backdrop-blur-lg text-gray-800 border-b border-gray-200/50 shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out"
+    :style="{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-2.5">
       <!-- Mobile Layout -->
@@ -66,7 +64,49 @@
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const showHeader = ref(true)
+let lastScrollY = 0
+let ticking = false
+
+const handleScroll = () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const currentScrollY = window.scrollY
+      
+      // Si estamos en la parte superior (primeros 50px), siempre mostrar el header
+      if (currentScrollY < 50) {
+        showHeader.value = true
+      } else {
+        // Detectar dirección del scroll
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          // Scrolling down y después de 100px - ocultar header
+          showHeader.value = false
+        } else if (currentScrollY < lastScrollY) {
+          // Scrolling up - mostrar header
+          showHeader.value = true
+        }
+      }
+      
+      lastScrollY = currentScrollY
+      ticking = false
+    })
+    
+    ticking = true
+  }
+}
+
+onMounted(() => {
+  lastScrollY = window.scrollY
+  window.addEventListener('scroll', handleScroll, { passive: true })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+</script>
 
 <style scoped>
 header {

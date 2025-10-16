@@ -7,7 +7,7 @@ import MainComponent from './components/MainComponent.vue'
   <div class="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100">
     <AppHeader />
 
-    <main class="flex-1 p-0">
+    <main class="flex-1 p-0 pt-16 sm:pt-20">
       <MainComponent />
     </main>
   </div>
