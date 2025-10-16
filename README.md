@@ -446,55 +446,6 @@ app.use(Toast, {
 
 ---
 
-## 🐛 Solución de Problemas
-
-### Error de CORS
-
-**Problema:** `Access to fetch has been blocked by CORS policy`
-
-**Solución:**
-
-```bash
-# En el backend
-cd backend
-php artisan config:clear
-php artisan serve
-```
-
-### Dependencias no instaladas
-
-**Problema:** Errores de módulos no encontrados
-
-**Solución:**
-
-```bash
-# Frontend
-cd frontend
-rm -rf node_modules package-lock.json
-npm install
-
-# Backend
-cd backend
-rm -rf vendor composer.lock
-composer install
-```
-
-### Puerto ocupado
-
-**Problema:** El puerto 5173 o 8000 está en uso
-
-**Solución:**
-
-```bash
-# Frontend - usar otro puerto
-npm run dev -- --port 3000
-
-# Backend - usar otro puerto
-php artisan serve --port=8001
-```
-
----
-
 ## 📌 Roadmap / Próximas Mejoras
 
 ### Versión 2.0
@@ -571,7 +522,6 @@ Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 -   [Documentación de Laravel](https://laravel.com/docs)
 -   [Guía de Tailwind CSS](https://tailwindcss.com/docs)
 -   [Matriz de Eisenhower en Wikipedia](https://es.wikipedia.org/wiki/Matriz_de_Eisenhower)
--   [Libro: "Los 7 Hábitos de la Gente Altamente Efectiva"](https://www.amazon.com/dp/1982137274)
 
 ---
 
