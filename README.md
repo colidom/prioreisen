@@ -157,7 +157,7 @@ Funcional y completo. Soporta creación, edición, clasificación y archivado de
 
 ## ✨ Capturas
 
-![Vista previa de prioreisen](img/dashboard.png)
+![Vista previa de prioreisen](frontend\public\Prioreisen.png)
 
 ## 🤝 Contribuciones
 
