@@ -29,7 +29,7 @@
           />
           <div class="flex flex-col">
             <span class="text-xl font-bold text-indigo-600 tracking-tight">Prioreisen</span>
-            <span class="text-xs text-gray-500">Priotiza tus tareas</span>
+            <span class="text-xs text-gray-500">Prioriza tus tareas</span>
           </div>
         </div>
 
@@ -75,7 +75,7 @@ const handleScroll = () => {
   if (!ticking) {
     window.requestAnimationFrame(() => {
       const currentScrollY = window.scrollY
-      
+
       // Si estamos en la parte superior (primeros 50px), siempre mostrar el header
       if (currentScrollY < 50) {
         showHeader.value = true
@@ -89,11 +89,11 @@ const handleScroll = () => {
           showHeader.value = true
         }
       }
-      
+
       lastScrollY = currentScrollY
       ticking = false
     })
-    
+
     ticking = true
   }
 }
