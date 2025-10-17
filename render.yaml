@@ -1,64 +1,61 @@
 services:
-  # Backend Laravel
-  - type: web
-    name: prioreisen-api
-    env: php
-    region: frankfurt
-    plan: free
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-    startCommand: |
-      php artisan migrate --force
-      php artisan serve --host=0.0.0.0 --port=$PORT
-    envVars:
-      - key: APP_NAME
-        value: Prioreisen
-      - key: APP_ENV
-        value: production
-      - key: APP_KEY
-        generateValue: true
-      - key: APP_DEBUG
-        value: false
-      - key: APP_URL
-        value: https://prioreisen-api.onrender.com
-      - key: LOG_CHANNEL
-        value: stack
-      - key: LOG_LEVEL
-        value: error
-      - key: DB_CONNECTION
-        value: pgsql
-      - key: DB_HOST
-        fromDatabase:
-          name: prioreisen-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: prioreisen-db
-          property: port
-      - key: DB_DATABASE
-        fromDatabase:
-          name: prioreisen-db
-          property: database
-      - key: DB_USERNAME
-        fromDatabase:
-          name: prioreisen-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: prioreisen-db
-          property: password
-      - key: SESSION_DRIVER
-        value: cookie
-      - key: QUEUE_CONNECTION
-        value: sync
-      - key: CACHE_DRIVER
-        value: file
+    - type: web
+      name: prioreisen-api
+      plan: free
+      region: frankfurt
+      buildCommand: |
+          composer install --no-dev --optimize-autoloader
+          php artisan config:cache
+          php artisan route:cache
+      startCommand: |
+          php artisan migrate --force
+          php artisan serve --host=0.0.0.0 --port=$PORT
+      envVars:
+          - key: APP_NAME
+            value: Prioreisen
+          - key: APP_ENV
+            value: production
+          - key: APP_KEY
+            generateValue: true
+          - key: APP_DEBUG
+            value: false
+          - key: APP_URL
+            sync: false
+          - key: LOG_CHANNEL
+            value: stack
+          - key: LOG_LEVEL
+            value: error
+          - key: DB_CONNECTION
+            value: pgsql
+          - key: DB_HOST
+            fromDatabase:
+                name: prioreisen-db
+                property: host
+          - key: DB_PORT
+            fromDatabase:
+                name: prioreisen-db
+                property: port
+          - key: DB_DATABASE
+            fromDatabase:
+                name: prioreisen-db
+                property: database
+          - key: DB_USERNAME
+            fromDatabase:
+                name: prioreisen-db
+                property: user
+          - key: DB_PASSWORD
+            fromDatabase:
+                name: prioreisen-db
+                property: password
+          - key: SESSION_DRIVER
+            value: cookie
+          - key: QUEUE_CONNECTION
+            value: sync
+          - key: CACHE_DRIVER
+            value: file
 
 databases:
-  - name: prioreisen-db
-    databaseName: prioreisen
-    plan: free
-    region: oregon
+    - name: prioreisen-db
+      databaseName: prioreisen
+      plan: free
+      region: frankfurt
