@@ -3,7 +3,7 @@ services:
   - type: web
     name: prioreisen-api
     env: php
-    region: oregon
+    region: frankfurt
     plan: free
     buildCommand: |
       composer install --no-dev --optimize-autoloader
